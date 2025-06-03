@@ -5,6 +5,7 @@ import com.example.statisticservice.service.StatisticService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,15 +25,16 @@ public class StatisticController {
 
     // Add new
     @PostMapping("/statistic")
+    @PreAuthorize("hasAuthority('SCOPE_log')")
     public StatisticDTO add(@RequestBody StatisticDTO statisticDTO) {
         logger.debug("Add statistic");
 
-	try {
-	    Thread.sleep(4000);
-	} catch (InterruptedException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
+//	try {
+//	    Thread.sleep(4000);
+//	} catch (InterruptedException e) {
+//	    // TODO Auto-generated catch block
+//	    e.printStackTrace();
+//	}
 
         statisticService.add(statisticDTO);
         return statisticDTO;
@@ -40,6 +42,7 @@ public class StatisticController {
 
     // get all
     @GetMapping("/statistics")
+    @PreAuthorize("hasAuthority('SCOPE_read') && hasRole('ADMIN')")
     public List<StatisticDTO> getAll() {
         logger.debug("Get all statistic");
 
